@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.8'
 
 networks:
   app-network-public:
@@ -29,3 +29,10 @@ services:
       - ./data:/var/opt/mssql/data
       - ./log:/var/opt/mssql/log
       - ./secrets:/var/opt/mssql/secrets
+      - ./sql-scripts:/docker-entrypoint-initdb.d
+    # command: >
+    #   /bin/sh -c '
+    #     sleep 60 &&
+    #     cd /docker-entrypoint-initdb.d &&
+    #     /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Passw0rd" -d master -i init.sql
+    #   '

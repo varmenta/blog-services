@@ -1,42 +1,43 @@
 import {
   Controller,
   Get,
-  // Post,
-  // Body,
-  // Patch,
-  // Param,
-  // Delete,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
 } from '@nestjs/common'
 import { PostsService } from './posts.service'
-// import { CreatePostDto } from './dto/create-post.dto'
-// import { UpdatePostDto } from './dto/update-post.dto'
+import { Post as PostEntity } from './entities/post.entity'
+import { CreatePostDto } from './dto/create-post.dto'
+import { UpdatePostDto } from './dto/update-post.dto'
 
-@Controller('posts')
+@Controller({ path: 'posts', version: '1' })
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  // @Post()
-  // create(@Body() createPostDto: CreatePostDto) {
-  //   return this.postsService.create(createPostDto)
-  // }
-
-  @Get()
-  findAll() {
-    return this.postsService.findAll()
+  @Post()
+  async create(@Body() createPostDto: CreatePostDto): Promise<PostEntity> {
+    return await this.postsService.create(createPostDto)
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.postsService.findOne(+id)
-  // }
+  @Get()
+  async findAll(): Promise<PostEntity[]> {
+    return await this.postsService.findAll()
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-  //   return this.postsService.update(+id, updatePostDto)
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.postsService.findOne(+id)
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.postsService.remove(+id)
-  // }
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+    return await this.postsService.update(+id, updatePostDto)
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string): Promise<void> {
+    await this.postsService.remove(+id)
+  }
 }

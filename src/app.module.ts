@@ -14,11 +14,11 @@ import { Post } from './posts/entities/post.entity'
       username: 'sa',
       password: 'Passw0rd',
       database: 'blog',
+      synchronize: true,
       options: {
         encrypt: false,
       },
       autoLoadEntities: true,
-      synchronize: true,
       entities: [Post],
     }),
     PostsModule,
