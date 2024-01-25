@@ -8,6 +8,8 @@ import { HttpExceptionFilter } from 'libs'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true })
 
+  app.setGlobalPrefix('api')
+
   const configSwagger = new DocumentBuilder()
     .setTitle('Blog')
     .setDescription('Blog API Description')
