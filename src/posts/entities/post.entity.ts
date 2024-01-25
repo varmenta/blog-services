@@ -18,7 +18,7 @@ export class Post {
   @Column()
   author: string
 
-  @Column()
+  @Column({ type: 'nvarchar', length: 'MAX' })
   content: string
 
   @CreateDateColumn()

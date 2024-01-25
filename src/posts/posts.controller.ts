@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common'
 import { PostsService } from './posts.service'
 import { Post as PostEntity } from './entities/post.entity'
@@ -22,8 +23,8 @@ export class PostsController {
   }
 
   @Get()
-  async findAll(): Promise<PostEntity[]> {
-    return await this.postsService.findAll()
+  async findAll(@Query('search') search?: string): Promise<PostEntity[]> {
+    return await this.postsService.findAll(search)
   }
 
   @Get(':id')

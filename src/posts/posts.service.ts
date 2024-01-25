@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Post } from './entities/post.entity'
-import { Repository } from 'typeorm'
+import { Like, Repository } from 'typeorm'
 import { CreatePostDto } from './dto/create-post.dto'
 import { UpdatePostDto } from './dto/update-post.dto'
 
@@ -15,8 +15,18 @@ export class PostsService {
     return await this.postRepository.save(createPostDto)
   }
 
-  async findAll(): Promise<Post[]> {
-    return await this.postRepository.find()
+  async findAll(search?: string): Promise<Post[]> {
+    if (search) {
+      return await this.postRepository.find({
+        where: [
+          { title: Like(`%${search}%`) },
+          { content: Like(`%${search}%`) },
+          { author: Like(`%${search}%`) },
+        ],
+      })
+    } else {
+      return await this.postRepository.find()
+    }
   }
 
   async findOne(id: number): Promise<Post> {
