@@ -23,16 +23,7 @@ services:
       MSSQL_DATA_DIR: /var/opt/mssql/data
       MSSQL_PID: 'Developer'
       MSSQL_TCP_PORT: 1433
+      MSSQL_INIT_DB: 'blog'
     ports:
       - '1433:1433'
-    volumes:
-      - ./data:/var/opt/mssql/data
-      - ./log:/var/opt/mssql/log
-      - ./secrets:/var/opt/mssql/secrets
-      - ./sql-scripts:/docker-entrypoint-initdb.d
-    # command: >
-    #   /bin/sh -c '
-    #     sleep 60 &&
-    #     cd /docker-entrypoint-initdb.d &&
-    #     /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Passw0rd" -d master -i init.sql
-    #   '
+    command: ["bash", "-c", "/opt/mssql/bin/sqlservr & sleep 20s && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Passw0rd -d master -Q 'CREATE DATABASE blog;' && tail -f /dev/null"]
